@@ -1,52 +1,54 @@
-import usersMock from '../db/users.mock.js'
 import UsersHelpers from '../helpers/users.helpers.js'
+import UsersDaoMemory from '../daos/users.dao.memory.js'
+import UsersDaoMysql from '../daos/users.dao.mysql.js'
+
 
 export default class UsersControllers {
 
     constructor() {
-        this.users = usersMock
+        this.db = new UsersDaoMemory()
+        this.db = new UsersDaoMysql()
         this.helpers = new UsersHelpers()
     }
 
 
-    getUsers = (req, res) => {
-        res.json(this.users)
+    getUsers = async (req, res) => {
+        const users = await this.db.getAllUsers()
+        res.json(users)
     }
 
 
-    getUserById = (req, res) => {
-        const { id } = req.query
-        const user = this.users.find(user =>
-            user.id === parseInt(id))
+    getUserById = async (req, res) => {
+        const { id } = req.params
+        const user = await this.db.getUserById(id)
         res.json(user)
     }
 
 
-    addUser = (req, res) => {
-        const newUser = this.helpers.createUser(req.body)
-        this.users.push(newUser)
-        res.json(newUser)
+    getUsersByName = async (req, res) => {
+        const { name } = req.query
+        const result = await this.db.getUsersByName(name)
+        res.json(result)
     }
 
 
-    modifyUser = (req, res) => {
-        let modifiedUser = null
-        this.users = this.users.map(user => {
-
-            if (user.id === parseInt(req.body.id)) {
-                user = this.helpers.createUser(req.body)
-                modifiedUser = user
-            }
-
-            return user
-        })
-        res.json(modifiedUser)
+    addUser = async (req, res) => {
+        const user = this.helpers.createUser(req.body)
+        const result = await this.db.addUser(user)
+        res.json(result)
     }
 
 
-    deleteUser = (req, res) => {
-        this.users = this.users.filter(user =>
-            user.id !== parseInt(req.params.id))
-        res.json(this.users)
+    modifyUser = async (req, res) => {
+        const user = this.helpers.createUser(req.body)
+        const result = await this.db.modifyUser(user)
+        res.json(result)
+    }
+
+
+    deleteUser = async (req, res) => {
+        const { id } = req.params
+        const result = await this.db.deleteUser(id)
+        res.json(result)
     }
 }
