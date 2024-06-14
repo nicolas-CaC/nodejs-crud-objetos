@@ -1,4 +1,4 @@
-import Mysql from '../db/connections/Mysql.js';
+import Mysql from '../connections/Mysql.js';
 
 
 export default class UsersDaoMysql extends Mysql {

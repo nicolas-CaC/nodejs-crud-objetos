@@ -1,12 +1,12 @@
 import UsersHelpers from '../helpers/users.helpers.js'
-import UsersDaoMemory from '../daos/users.dao.memory.js'
-import UsersDaoMysql from '../daos/users.dao.mysql.js'
+import UsersDaoMemory from '../db/daos/users.dao.memory.js'
+import UsersDaoMysql from '../db/daos/users.dao.mysql.js'
 
 
 export default class UsersControllers {
 
     constructor() {
-        this.db = new UsersDaoMemory()
+        // this.db = new UsersDaoMemory()
         this.db = new UsersDaoMysql()
         this.helpers = new UsersHelpers()
     }

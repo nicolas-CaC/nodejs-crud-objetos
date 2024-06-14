@@ -1,4 +1,4 @@
-import usersMock from '../db/mocks/users.mock.js'
+import usersMock from '../mocks/users.mock.js'
 
 
 export default class UsersDaoMemory {

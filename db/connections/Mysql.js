@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import config from '../connections/config/mysql.config.js'
+import config from '../config/mysql.config.js'
 
 export default class Mysql {
 
